@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/RealTayy/scrapingAndMongoose#readme",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "mongojs": "^2.6.0",
+    "morgan": "^1.9.0"
   }
 }
