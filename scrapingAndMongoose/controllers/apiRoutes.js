@@ -30,20 +30,20 @@ const collectionName = require(path.join(mongoModelDir, 'ExSchema.js'));
 |* SET UP ROUTER *| 
 |*****************/
 /* SET ROUTES */
-router.get('/', (req, res) => {
+router.get('/scrap', (req, res) => {
     collectionName.find({})
         .exec((error, data) => {
             res.json(data);
         })
 });
 
-router.post('/', (req, res) => {
+router.post('/articles', (req, res) => {
 });
 
-router.delete('/', (req, res) => {
+router.delete('/article/:id', (req, res) => {
 });
 
-router.put('/', (req, res) => {
+router.put('/notes/:id', (req, res) => {
 });
 
 /***********|
