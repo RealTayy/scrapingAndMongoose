@@ -44,7 +44,7 @@ const exphbs = require('express-handlebars');
 |* SET UP MODELS *| 
 |*****************/
 // Connect to db
-mongoose.connect('mongodb://localhost/boilerPlateDB');
+mongoose.connect('mongodb://localhost/slashdotScraperDB');
 const db = mongoose.connection;
 
 // Logs error if mongoDB/mongoose runs into an error

@@ -22,7 +22,8 @@ var exphbs = require('express-handlebars');
 const mongoModelDir = path.join(__dirname, '..', 'db', 'models', 'mongoose-models');
 
 /* TALK TO MODELS */
-const mongoModel = require(path.join(mongoModelDir, 'ExSchema.js'));
+const articles = require(path.join(mongoModelDir, 'Article.js'));
+const notes = require(path.join(mongoModelDir, 'Note.js'));
 
 /*****************|
 |* SET UP ROUTER *| 

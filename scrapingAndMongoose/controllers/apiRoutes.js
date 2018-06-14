@@ -24,17 +24,43 @@ const cheerio = require('cheerio');
 const mongoModelDir = path.join(__dirname, '..', 'db', 'models', 'mongoose-models');
 
 /* TALK TO MODELS */
-const collectionName = require(path.join(mongoModelDir, 'ExSchema.js'));
+const Articles = require(path.join(mongoModelDir, 'Article.js'));
+const Notes = require(path.join(mongoModelDir, 'Note.js'));
 
 /*****************|
-|* SET UP ROUTER *| 
+|* SET UP ROUTER *|
 |*****************/
 /* SET ROUTES */
 router.get('/scrap', (req, res) => {
-    collectionName.find({})
-        .exec((error, data) => {
-            res.json(data);
-        })
+    request(
+        'https://slashdot.org/',
+        function (error, response, html) {
+            if (error) throw new Error(error);
+            if (response.statusCode != 200) console.log(`Exiting request: Page returned status code: ' ${response.statusCode}`);
+
+            var $ = cheerio.load(html);
+
+            let articlesArr = [];
+
+            $('article.article').each((i, ele) => {
+                let article = {};
+                article.key = $(ele).attr('id');
+                article.title = $(ele).find('span[class="story-title"] > a').text();
+                article.innerHTML = $(ele).find('div[class="body"] > div').html().replace(/((\n|\t))+( )?((\n|\t))+/gm, '');
+                Articles.create(article, (error, data) => {
+                    if (error) {
+                        if (error.code == 11000) console.log(`Article ID:${article.key} already in database.`);
+                        else console.log(error);
+                    }
+                    else {
+                        articlesArr.push(data);
+                    }
+                });
+            });
+            res.json(articlesArr);
+        }
+
+    )
 });
 
 router.post('/articles', (req, res) => {
